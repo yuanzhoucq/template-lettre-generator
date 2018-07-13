@@ -8,7 +8,7 @@
 
 <h1>Template lettre generator</h1>
 
-<form action="/generate" method="get" id="form">
+<form action="./generate" method="get" id="form">
 
 </form>
 
@@ -31,7 +31,7 @@
     const sel = document.getElementById("template");
     const t = sel.options[sel.selectedIndex].value;
     if (t !== "please choose a template") {
-      fetch('/preview?t='+t).then(res => res.text())
+      fetch('./preview?t='+t).then(res => res.text())
         .then(res => {
           // clear old input fields
           for (let i=form.childNodes.length-1;i>1;i--) {
@@ -61,7 +61,7 @@
         })
     }
   }
-  fetch('/template-list')
+  fetch('./template-list')
     .then(function(response) {
       return response.json();
     })
