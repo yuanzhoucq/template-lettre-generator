@@ -47,6 +47,7 @@
             form.removeChild(form.childNodes[i])
           }
           let variables = res.match(/#{.+?}/g);
+          variables = [...new Set(variables)];
           variables.forEach(v => {
             const id = v.slice(2,-1);
             let div = `<div class="form-example">
