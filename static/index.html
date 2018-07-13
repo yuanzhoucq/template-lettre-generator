@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122337750-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-122337750-1');
+    </script>
     <meta charset="UTF-8">
     <title>Template lettre generator</title>
 </head>
@@ -75,6 +84,7 @@
                 <option value="please choose a template">please choose a template</option>
                 ${options}
             </select>
+            <p>Want to share to your template for helping others? <a href="mailto:yzhou.cn@icloud.com">Send</a> me an email or <a href="https://github.com/yuanzhoucq/template-lettre-generator/tree/master/template">edit</a> on Github.</p>
         </div>
         `;
       form.appendChild(createElementFromHTML(selector));
