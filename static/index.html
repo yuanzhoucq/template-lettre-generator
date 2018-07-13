@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Template lettre generator</title>
+</head>
+<body>
+
+<h1>Template lettre generator</h1>
+
+<form action="/generate" method="get" id="form">
+
+</form>
+
+<br>
+
+<div id="preview">
+
+</div>
+
+<script>
+  const previewNode = document.getElementById("preview");
+  const form = document.getElementById('form');
+  function createElementFromHTML(htmlString) {
+    let div = document.createElement('div');
+    div.innerHTML = htmlString.trim();
+    // Change this to div.childNodes to support multiple top-level nodes
+    return div.firstChild;
+  }
+  function onTemplateSelected(e) {
+    const sel = document.getElementById("template");
+    const t = sel.options[sel.selectedIndex].value;
+    if (t !== "please choose a template") {
+      fetch('/preview?t='+t).then(res => res.text())
+        .then(res => {
+          // clear old input fields
+          for (let i=form.childNodes.length-1;i>1;i--) {
+            form.removeChild(form.childNodes[i])
+          }
+          let variables = res.match(/#{.+?}/g);
+          variables.forEach(v => {
+            const id = v.slice(2,-1);
+            let div = `<div class="form-example">
+                          <label for="${id}">${id}: </label>
+                          <input type="text" name="${id}" id="${id}" required>
+                       </div>`;
+            form.appendChild(createElementFromHTML(div));
+          });
+          const submitter = `
+            <div class="form-example">
+              <input type="submit" value="Generate PDF file">
+            </div>
+          `;
+          form.appendChild(createElementFromHTML(submitter));
+
+
+          while (previewNode.firstChild) {
+            previewNode.removeChild(previewNode.firstChild)
+          }
+          previewNode.appendChild(createElementFromHTML("<div><h2>Preview</h2>"+res+"</div>"))
+        })
+    }
+  }
+  fetch('/template-list')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      let options = "";
+      myJson.forEach(t => options += `<option value=${t}>${t}</option>`);
+      let selector = `
+        <div class="form-example">
+            <label for="template">Template: </label>
+            <select name="template" id="template" onchange="onTemplateSelected()">
+                <option value="please choose a template">please choose a template</option>
+                ${options}
+            </select>
+        </div>
+        `;
+      form.appendChild(createElementFromHTML(selector));
+
+    });
+</script>
+</body>
+</html>
