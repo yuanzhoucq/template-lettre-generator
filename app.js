@@ -51,7 +51,7 @@ router.get('/generate', async (ctx) => {
 
   await toFile.call(tmp, `./static/pdf/${filename}.pdf`);
 
-  ctx.redirect(`/pdf/${filename}.pdf`)
+  ctx.redirect(`./pdf/${filename}.pdf`)
 
 });
 
